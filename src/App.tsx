@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './Home'
 import { ThemeProvider } from './context/theme-context'
 import { AuthProvider } from './context/auth-context'
-import './index.css'
 
 function App() {
   return (
