@@ -46,10 +46,12 @@ const AuthAction: React.FC = () => {
 
     setLoading(true);
     setError(null);
+    setSuccess(false); // Reset success state
 
     try {
       await applyActionCode(auth, oobCode);
       setSuccess(true);
+      setError(null); // Clear any errors
       
       // Redirect to auth page after 3 seconds
       setTimeout(() => {
@@ -57,6 +59,7 @@ const AuthAction: React.FC = () => {
       }, 3000);
     } catch (error: any) {
       console.error("Email verification error:", error);
+      setSuccess(false); // Make sure success is false on error
       if (error.code === "auth/invalid-action-code") {
         setError("This verification link has already been used or is invalid");
       } else {
@@ -134,7 +137,7 @@ const AuthAction: React.FC = () => {
                 Email Verification
               </h2>
 
-              {loading && (
+              {loading && !success && !error && (
                 <div className="text-center">
                   <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                   <p className={theme === "dark" ? "text-gray-300" : "text-gray-700"}>
@@ -143,7 +146,7 @@ const AuthAction: React.FC = () => {
                 </div>
               )}
 
-              {success && (
+              {success && !error && (
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-white text-3xl">✓</span>
@@ -157,12 +160,28 @@ const AuthAction: React.FC = () => {
                 </div>
               )}
 
-              {error && (
+              {error && !success && (
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-3xl">✕</span>
-                  </div>
-                  <p className="text-red-500 mb-4">{error}</p>
+                  {error.includes("already been used") ? (
+                    <>
+                      <div className="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-white text-3xl">!</span>
+                      </div>
+                      <p className={`mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                        This email verification link has already been used.
+                      </p>
+                      <p className={`text-sm mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        Your email is already verified. You can now log in!
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-white text-3xl">✕</span>
+                      </div>
+                      <p className="text-red-500 mb-4">{error}</p>
+                    </>
+                  )}
                   <button
                     onClick={() => navigate("/auth")}
                     className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"

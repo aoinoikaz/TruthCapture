@@ -49,13 +49,21 @@ const Auth: React.FC = () => {
     setShowSuccessMessage(false);
   }, [isLogin, showForgotPassword]);
 
-  // Countdown timer for redirect
+  // Countdown timer for redirect - FIXED
   useEffect(() => {
     if (showSuccessMessage && redirectCountdown > 0) {
       const timer = setTimeout(() => {
         setRedirectCountdown(redirectCountdown - 1);
       }, 1000);
       return () => clearTimeout(timer);
+    } else if (showSuccessMessage && redirectCountdown === 0) {
+      // Redirect when countdown reaches 0
+      setShowSuccessMessage(false);
+      setIsLogin(true);
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setDisplayName("");
     }
   }, [showSuccessMessage, redirectCountdown]);
 
