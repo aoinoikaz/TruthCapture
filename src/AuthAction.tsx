@@ -1,5 +1,5 @@
 // src/AuthAction.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { applyActionCode, confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
 import { auth } from "./config/firebase";
@@ -18,7 +18,9 @@ const AuthAction: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState("");
-  const [hasAttemptedVerification, setHasAttemptedVerification] = useState(false);
+  
+  // Use ref to track if verification has been attempted
+  const hasAttemptedVerification = useRef(false);
   
   // For password reset
   const [newPassword, setNewPassword] = useState("");
@@ -39,37 +41,41 @@ const AuthAction: React.FC = () => {
     }
   }, [mode, oobCode]);
 
-  const handleVerifyEmail = async () => {
-    if (!oobCode) {
-      setError("Invalid verification link");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    setSuccess(false); // Reset success state
-
-    try {
-      await applyActionCode(auth, oobCode);
-      setSuccess(true);
-      setError(null); // Clear any errors
+  // Auto-verify email on page load
+  useEffect(() => {
+    if (mode === "verifyEmail" && oobCode && !hasAttemptedVerification.current) {
+      hasAttemptedVerification.current = true;
       
-      // Redirect to auth page after 3 seconds
-      setTimeout(() => {
-        navigate("/auth");
-      }, 3000);
-    } catch (error: any) {
-      console.error("Email verification error:", error);
-      setSuccess(false); // Make sure success is false on error
-      if (error.code === "auth/invalid-action-code") {
-        setError("This verification link has already been used or is invalid");
-      } else {
-        setError(error.message || "Failed to verify email");
-      }
-    } finally {
-      setLoading(false);
+      const verifyEmail = async () => {
+        setLoading(true);
+        setError(null);
+        setSuccess(false);
+
+        try {
+          await applyActionCode(auth, oobCode);
+          setSuccess(true);
+          setError(null);
+          
+          // Redirect to auth page after 3 seconds
+          setTimeout(() => {
+            navigate("/auth");
+          }, 3000);
+        } catch (error: any) {
+          console.error("Email verification error:", error);
+          setSuccess(false);
+          if (error.code === "auth/invalid-action-code") {
+            setError("This verification link has already been used or is invalid");
+          } else {
+            setError(error.message || "Failed to verify email");
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      verifyEmail();
     }
-  };
+  }, [mode, oobCode, navigate]);
 
   const handleResetPassword = async () => {
     if (!oobCode) {
@@ -109,14 +115,6 @@ const AuthAction: React.FC = () => {
       setLoading(false);
     }
   };
-
-  // Auto-verify email on page load
-  useEffect(() => {
-    if (mode === "verifyEmail" && oobCode && !hasAttemptedVerification) {
-      setHasAttemptedVerification(true);
-      handleVerifyEmail();
-    }
-  }, [mode, oobCode, hasAttemptedVerification]);
 
   return (
     <div className={`min-h-screen ${theme === "dark" ? "dark bg-gray-900" : "bg-gray-50"}`}>
