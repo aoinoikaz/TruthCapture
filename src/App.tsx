@@ -1,27 +1,20 @@
-import { useEffect, useState } from 'react'
-import { auth } from './config/firebase'
+// src/App.tsx
+import { Routes, Route } from 'react-router-dom'
+import Home from './Home'
+import { ThemeProvider } from './context/theme-context'
+import { AuthProvider } from './context/auth-context'
 import './App.css'
 
 function App() {
-  const [connected, setConnected] = useState(false)
-
-  useEffect(() => {
-    // Test Firebase connection
-    if (auth) {
-      setConnected(true)
-      console.log('✅ Firebase connected!')
-    }
-  }, [])
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">TruthCapture</h1>
-        <p className={connected ? "text-green-400" : "text-yellow-400"}>
-          {connected ? "✅ Firebase Connected" : "⏳ Connecting..."}
-        </p>
-      </div>
-    </div>
+    <ThemeProvider>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {/* Add more routes here later */}
+        </Routes>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 
