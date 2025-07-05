@@ -1,14 +1,17 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 3001,  // Different port from GB Hub
-    host: true,
+  base: '/',
+  build: {
+    outDir: 'dist',
   },
-  preview: {
+  server: {
     port: 3001,
-    host: true,
-  }
-})
+    strictPort: true,
+    host: true
+  },
+  plugins: [
+    tailwindcss(),
+  ],
+});
