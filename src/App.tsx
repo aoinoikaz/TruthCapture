@@ -1,6 +1,10 @@
 // src/App.tsx
 import { Routes, Route } from 'react-router-dom'
 import Home from './Home'
+import Auth from './Auth'
+import AuthAction from './AuthAction'
+import Dashboard from './Dashboard'
+import ProtectedRoute from './routes/ProtectedRoute'
 import { ThemeProvider } from './context/theme-context'
 import { AuthProvider } from './context/auth-context'
 
@@ -9,8 +13,15 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          {/* Add more routes here later */}
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/action" element={<AuthAction />} />
+          
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </ThemeProvider>
