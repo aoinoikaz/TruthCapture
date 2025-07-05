@@ -18,6 +18,7 @@ const AuthAction: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState("");
+  const [hasAttemptedVerification, setHasAttemptedVerification] = useState(false);
   
   // For password reset
   const [newPassword, setNewPassword] = useState("");
@@ -111,10 +112,11 @@ const AuthAction: React.FC = () => {
 
   // Auto-verify email on page load
   useEffect(() => {
-    if (mode === "verifyEmail" && oobCode && !success && !error) {
+    if (mode === "verifyEmail" && oobCode && !hasAttemptedVerification) {
+      setHasAttemptedVerification(true);
       handleVerifyEmail();
     }
-  }, [mode, oobCode]);
+  }, [mode, oobCode, hasAttemptedVerification]);
 
   return (
     <div className={`min-h-screen ${theme === "dark" ? "dark bg-gray-900" : "bg-gray-50"}`}>
