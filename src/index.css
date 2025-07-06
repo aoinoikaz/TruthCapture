@@ -110,7 +110,7 @@ h6 { font-size: 1rem; }
   background-clip: text;
 }
 
-/* Background gradient */
+/* Background gradient - FIXED for light mode */
 .gradient-bg {
   position: fixed;
   top: 0;
@@ -119,9 +119,10 @@ h6 { font-size: 1rem; }
   bottom: 0;
   z-index: -1;
   background: rgb(var(--bg-primary));
+  transition: background 0.3s ease;
 }
 
-/* Light mode gradient - subtle */
+/* Light mode gradient - much more subtle */
 .gradient-bg::before {
   content: '';
   position: absolute;
@@ -131,7 +132,7 @@ h6 { font-size: 1rem; }
   height: 200%;
   background: radial-gradient(
     circle at 20% 30%,
-    rgba(var(--purple-500), 0.03) 0%,
+    rgba(var(--purple-500), 0.02) 0%,
     transparent 50%
   );
 }
@@ -145,7 +146,7 @@ h6 { font-size: 1rem; }
   height: 200%;
   background: radial-gradient(
     circle at 80% 70%,
-    rgba(var(--blue-500), 0.03) 0%,
+    rgba(var(--blue-500), 0.02) 0%,
     transparent 50%
   );
 }
@@ -167,10 +168,8 @@ h6 { font-size: 1rem; }
   );
 }
 
-/* Cards */
+/* Cards - Fixed for proper dark mode */
 .card {
-  background: rgb(var(--bg-card));
-  border: 1px solid rgb(var(--border));
   border-radius: 16px;
   padding: 24px;
   transition: all 0.2s ease;
@@ -178,18 +177,27 @@ h6 { font-size: 1rem; }
   -webkit-backdrop-filter: blur(10px);
 }
 
-.card:hover {
-  background: rgb(var(--bg-card-hover));
-  border-color: rgb(var(--border-hover));
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+/* Light mode cards */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+.card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(203, 213, 225, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark mode cards */
 .dark .card {
   background: rgba(30, 41, 59, 0.5);
-  border-color: rgba(51, 65, 85, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .dark .card:hover {
@@ -351,24 +359,32 @@ h6 { font-size: 1rem; }
   transition: width 0.3s ease;
 }
 
-/* Stat cards */
+/* Stat cards - Fixed for proper dark mode */
 .stat-card {
-  background: rgb(var(--bg-card));
-  border: 1px solid rgb(var(--border));
   border-radius: 16px;
   padding: 20px;
   transition: all 0.2s ease;
 }
 
-.stat-card:hover {
-  border-color: rgb(var(--border-hover));
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+/* Light mode stat cards */
+.stat-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+.stat-card:hover {
+  border-color: rgba(203, 213, 225, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark mode stat cards */
 .dark .stat-card {
   background: rgba(30, 41, 59, 0.5);
-  border-color: rgba(51, 65, 85, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .dark .stat-card:hover {
@@ -393,28 +409,83 @@ h6 { font-size: 1rem; }
   background: rgba(var(--gray-800), 0.5);
 }
 
-/* Capture item */
+/* Capture item - Fixed for proper dark mode */
 .capture-item {
-  background: rgb(var(--bg-secondary));
-  border: 1px solid rgb(var(--border));
   border-radius: 12px;
   padding: 16px;
   transition: all 0.2s ease;
 }
 
-.capture-item:hover {
-  border-color: rgba(var(--purple-500), 0.5);
-  box-shadow: 0 4px 16px rgba(var(--purple-500), 0.05);
+/* Light mode capture items */
+.capture-item {
+  background: rgba(248, 250, 252, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.5);
 }
 
+.capture-item:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.08);
+}
+
+/* Dark mode capture items */
 .dark .capture-item {
-  background: rgba(var(--gray-800), 0.3);
-  border-color: rgba(var(--gray-700), 0.5);
+  background: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(51, 65, 85, 0.5);
 }
 
 .dark .capture-item:hover {
-  border-color: rgba(var(--purple-500), 0.5);
-  box-shadow: 0 4px 16px rgba(var(--purple-500), 0.1);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.15);
+}
+
+/* Hero section specific - FIXED for proper light/dark mode */
+.hero-gradient {
+  background: linear-gradient(180deg, 
+    rgb(var(--bg-primary)) 0%, 
+    rgb(var(--bg-secondary)) 100%
+  );
+}
+
+/* Hero purple section (Trust Layer) - different approach for light/dark */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light mode hero - subtle purple background */
+.hero-section-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(var(--purple-100), 0.5) 0%,
+    rgba(var(--purple-50), 0.3) 100%
+  );
+}
+
+/* Dark mode hero - rich purple gradient */
+.dark .hero-section-bg {
+  background: linear-gradient(135deg,
+    rgb(var(--purple-600)) 0%,
+    rgb(var(--purple-700)) 50%,
+    rgb(var(--purple-900)) 100%
+  );
+}
+
+/* CTA section - always purple in both modes */
+.cta-section {
+  background: linear-gradient(135deg,
+    rgb(var(--purple-600)) 0%,
+    rgb(var(--purple-700)) 100%
+  );
+}
+
+/* Feature cards background */
+.feature-section {
+  background: rgb(var(--bg-secondary));
+}
+
+.dark .feature-section {
+  background: rgba(var(--gray-900), 0.5);
 }
 
 /* Animations */
@@ -490,21 +561,4 @@ h6 { font-size: 1rem; }
 
 .transition-smooth {
   transition: all 0.2s ease;
-}
-
-/* Hero section specific */
-.hero-gradient {
-  background: linear-gradient(180deg, 
-    rgb(var(--bg-primary)) 0%, 
-    rgb(var(--bg-secondary)) 100%
-  );
-}
-
-/* Feature cards background */
-.feature-section {
-  background: rgb(var(--bg-secondary));
-}
-
-.dark .feature-section {
-  background: rgba(var(--gray-900), 0.5);
 }
