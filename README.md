@@ -22,17 +22,3 @@ TruthCapture is a distributed web content verification system that creates crypt
 - **ML Engine**: Python, FastAPI, PyTorch
 
 ## 🏃 Quick Start
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/truthcapture.git
-cd truthcapture
-
-# Install all dependencies
-make install
-
-# Start all services (each in separate terminal)
-make dev-web
-make dev-orchestrator
-make dev-worker
-make dev-ml
