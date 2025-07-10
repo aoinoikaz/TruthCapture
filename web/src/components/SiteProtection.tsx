@@ -14,7 +14,7 @@ const SiteProtection: React.FC<SiteProtectionProps> = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   // Hard-coded password - you can change this or use env variable
-  const SITE_PASSWORD = 'fuckjews1234!' // Change this!
+  const SITE_PASSWORD = 'wowliberals1234!' // Change this!
 
   useEffect(() => {
     // Check if already authenticated
